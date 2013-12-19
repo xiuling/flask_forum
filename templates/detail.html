@@ -1,0 +1,25 @@
+{% extends "main.html" %}
+{% block body %}
+<section id="main">	
+	<div id="post">
+		<h2>{{ post.title }}</h2>
+		<small>Posted by {{ post.author }} on {{ post.created|friendlytime }}</small>
+		<div>{{ post.html|markdown|safe }}</div>
+	</div>
+	<div id="comment">
+		{% for reply in replies %}
+			{{ reply.author }} : {{ reply.content }}
+		{% endfor %}
+	</div>
+	<div id="addReply">
+		<form action="{{ url_for('reply',id=post.id) }}"  method="post">
+			<p><textarea rows=10 cols=50 name="content" id="content"></textarea>
+		
+			<input type="submit" value="Submit" />
+		</form>
+	</div>
+</section>
+<section role="sidebar">
+
+</section>
+{% endblock %}

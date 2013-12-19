@@ -1,0 +1,35 @@
+<!doctype html>
+<title>v2xm forum</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+
+<body>
+<header>
+	<h2><a href="/">V2XM</a></h2>
+	</p>
+    {% if session.username %}
+    	<p class="login"><a href="{{ url_for('personcenter', name=session['username']) }}">Person Center</a><a href="{{ url_for('logout') }}">Logout</a><a href="{{ url_for('newpost') }}">New Post</a></p>
+    {% else %}
+    	<p class="login"><a href="{{ url_for('login') }}">Login</a><a href="{{ url_for('register') }}">Register</a></p>   	
+    {% endif %}
+    
+</header>
+<div class="container">
+<div class="message">
+	{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+		<ul class=flashes>
+		{% for message in messages %}
+		  <li class="flash">{{ message }}</li>
+		{% endfor %}
+		</ul>
+	  {% endif %}
+	{% endwith %}
+</div>
+{% block body %}
+{% endblock %}
+</div>
+<footer>
+	<p>&copy; V2XM 2013-</p>
+</footer>
+
+</body>

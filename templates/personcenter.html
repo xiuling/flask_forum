@@ -1,0 +1,21 @@
+{% extends "main.html" %}
+{% block body %}
+<section role="main">
+{% for post in posts %}
+	<div class="post">
+	<a id="title" href="{{ url_for('detail', id=post.id) }}">{{ post.title }}</a>
+	<small>{{ post.created|friendlytime }}</small>
+	{% if session.username %}
+		<a id="option" href="{{ url_for('edit', id=post.id) }}">edit</a>
+		<a id="option" href="{{ url_for('delete', id=post.id) }}">delete</a>
+	{% endif %}
+	<br />	
+	</div>
+{% else %}
+	<p>No posts yet.</p>
+{% endfor %}
+</section>
+<section role="sidebar">
+	<h3><a href="{{ url_for('personcenter', name=user.username) }}">{{ user.username }}</a></h3>
+</section>
+{% endblock %}
