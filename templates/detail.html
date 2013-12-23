@@ -9,11 +9,14 @@
 	<div id="comment">
 		{% for reply in replies %}
 			{{ reply.author }} : {{ reply.content }}
+		{% else %}
+			<p>There is no replies yet.</p>
 		{% endfor %}
 	</div>
 	<div id="addReply">
+		<p>Add New Reply</p>
 		<form action="{{ url_for('reply',id=post.id) }}"  method="post">
-			<p><textarea rows=10 cols=50 name="content" id="content"></textarea>
+			<p><textarea rows=10 cols=50 name="content" id="content"></textarea></P>
 		
 			<input type="submit" value="Submit" />
 		</form>

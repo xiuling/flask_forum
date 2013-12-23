@@ -1,0 +1,19 @@
+{% extends "main.html" %}
+{% block body %}
+<section role="main">
+{% for user in users %}
+	<div class="post">
+	<a id="title" href="{{ url_for('personcenter', name=user.username) }}">{{ user.username }}</a>
+	{% if session.gid == 1 %}
+		<a id="option" href="{{ url_for('deluser', id=user.id) }}">delete</a>
+	{% endif %}
+	<br />	
+	</div>
+{% else %}
+	<p>No user yet.</p>
+{% endfor %}
+</section>
+<section role="sidebar">
+	<h3><a href="{{ url_for('personcenter', name=session.username) }}">{{ session.username }}</a></h3>
+</section>
+{% endblock %}

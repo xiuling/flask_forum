@@ -59,7 +59,6 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), unique=True)
@@ -67,17 +66,18 @@ class User(db.Model):
     pic = db.Column(db.String(100), unique=True, nullable=True)
     password = db.Column(db.String(30))
     status = db.Column(db.Integer, default=0)
+    gid = db.Column(db.Integer, default=0)
     posts = db.relationship('Post', backref='user', lazy='dynamic')
     replay = db.relationship('Reply', backref='user', lazy='dynamic')
 
-    def __init__(self, username, password,email):
+    def __init__(self, username, password, email):
         self.username = username
         self.password = password
         self.email = email
 
     def __repr__(self):
         return '<user %r>' % self.username
-
+        
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(60))
@@ -231,6 +231,7 @@ def register():
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
+        #gid = 0
 
         db.session.add(User(username, password, email))
         db.session.commit()
@@ -249,6 +250,7 @@ def login():
 
         if user and user.username == username and user.password == password:
             session['username'] = request.form['username']
+            session['gid'] = user.gid
             flash('You were logged in.')
             return redirect(url_for('personcenter', name=username))
     return render_template('login.html', error=error)
@@ -260,6 +262,49 @@ def logout():
     session.pop('username', None)
     flash('You were logged out.')
     return redirect(url_for('index'))
+
+@app.route('/manauser/')
+@login_required
+def manauser():
+    users = User.query.order_by('id DESC')
+    return render_template('manauser.html', users=users)
+
+@app.route('/manapost/')
+@login_required
+def manapost():
+    posts = Post.query.order_by('id DESC')
+    return render_template('manapost.html', posts=posts)
+
+@app.route('/deluser/<int:id>/')
+@login_required
+def deluser(id):
+    user = User.query.filter_by(id=id).first()
+    posts = Post.query.filter_by(author=user.username).all()
+    replies = Reply.query.filter_by(author=user.username).all()
+    if user:
+        db.session.delete(user)
+        if posts:
+            db.session.delete(posts)
+            if replies:
+                db.session.delete(replies)
+        db.session.commit()
+        flash(" the User and his/her Post/replies deleted.")
+        
+    return redirect(url_for('manauser'))
+
+@app.route('/delpost/<int:id>/')
+@login_required
+def delpost(id):
+    post = Post.query.filter_by(id=id).first()
+    replies = Reply.query.filter_by(post_id=id).all()
+    if post:
+        db.session.delete(post)
+        if replies:
+            db.session.delete(replies)
+        db.session.commit()
+        flash(" the Post and its replies deleted.")
+        
+    return redirect(url_for('manapost'))
 
 if __name__ == '__main__':
     debug = True

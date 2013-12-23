@@ -7,7 +7,11 @@
 	<h2><a href="/">V2XM</a></h2>
 	</p>
     {% if session.username %}
-    	<p class="login"><a href="{{ url_for('personcenter', name=session['username']) }}">Person Center</a><a href="{{ url_for('logout') }}">Logout</a><a href="{{ url_for('newpost') }}">New Post</a></p>
+    	<p class="login"><a href="{{ url_for('newpost') }}">New Post</a><a href="{{ url_for('personcenter', name=session['username']) }}">Person Center</a>
+    	{% if session.gid == 1 %}
+    		<a href="{{ url_for('manauser') }}">Manage User</a><a href="{{ url_for('manapost') }}">Manage Post</a>
+    	{% endif %}
+    	<a href="{{ url_for('logout') }}">Logout</a></p>
     {% else %}
     	<p class="login"><a href="{{ url_for('login') }}">Login</a><a href="{{ url_for('register') }}">Register</a></p>   	
     {% endif %}
