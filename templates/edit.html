@@ -3,9 +3,9 @@
 <section role="main">
 <form action="{{ url_for('edit',id=post.id) }}" method="post">
 	<p><label for="title">Title</label><input type="text" name="title" id="title" value="{{ post.title }}"/></p>
-	<p><label for="content">Content</label><textarea rows=10 cols=50 name="body" id="body">{{ post.html|markdown|safe }}</textarea></p>
+	<p><label for="content">Content</label><textarea rows=10 name="body" id="body">{{ post.html|markdown|safe }}</textarea></p>
 	
-	<input type="submit" value="Submit" />
+	<p><input type="submit" value="Submit" /></p>
 </form>
 </section>
 {% endblock %}

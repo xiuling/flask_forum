@@ -2,27 +2,53 @@
 {% block body %}
 <section id="main">	
 	<div id="post">
-		<h2>{{ post.title }}</h2>
-		<small>Posted by {{ post.author }} on {{ post.created|friendlytime }}</small>
-		<div>{{ post.html|markdown|safe }}</div>
+		<div class="head">
+			<div class="inner">
+				<h2>{{ post.title }}</h2>
+				<small>Posted by {{ post.author }} on {{ post.created|friendlytime }}</small>
+			</div>
+		</div>
+		<div class="cell">{{ post.html|markdown|safe }}</div>
 	</div>
+	<div class="sep20"></div>
 	<div id="comment">
+		<div class="head">
+			<div class="inner">
+				<h5>replies</h5>
+			</div>
+		</div>
 		{% for reply in replies %}
-			{{ reply.author }} : {{ reply.content }}
+			<div class="cell">
+				{{ reply.author }} {{ reply.ctime }}
+				<p> {{ reply.content }} </p>
+			</div>
 		{% else %}
-			<p>There is no replies yet.</p>
+			<div class="empty">
+				<span>There is no replies yet.</span>
+			</div>
 		{% endfor %}
 	</div>
-	<div id="addReply">
-		<p>Add New Reply</p>
-		<form action="{{ url_for('reply',id=post.id) }}"  method="post">
-			<p><textarea rows=10 cols=50 name="content" id="content"></textarea></P>
-		
-			<input type="submit" value="Submit" />
-		</form>
-	</div>
+	{% if session.username %}
+		<div class="sep20"></div>
+		<div id="addReply">
+			<div class="head">
+				<div class="inner">
+					<span>Add New Reply</span>
+				</div>
+			</div>
+			<form action="{{ url_for('reply',id=post.id) }}"  method="post">
+				<p><textarea rows=10 name="content" id="content"></textarea></P>
+			
+				<input type="submit" value="Submit" />
+			</form>
+		</div>
+	{% endif %}
 </section>
 <section role="sidebar">
-
+	<div class="head">
+			<div class="inner">
+				
+			</div>
+		</div>
 </section>
 {% endblock %}

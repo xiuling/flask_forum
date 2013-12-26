@@ -67,6 +67,7 @@ class User(db.Model):
     password = db.Column(db.String(30))
     status = db.Column(db.Integer, default=0)
     gid = db.Column(db.Integer, default=0)
+    join = db.Column(db.DateTime)
     posts = db.relationship('Post', backref='user', lazy='dynamic')
     replay = db.relationship('Reply', backref='user', lazy='dynamic')
 
@@ -74,6 +75,7 @@ class User(db.Model):
         self.username = username
         self.password = password
         self.email = email
+        self.join = datetime.now()
 
     def __repr__(self):
         return '<user %r>' % self.username
@@ -133,11 +135,11 @@ def index():
 def personcenter(name):
     user = User.query.filter_by(username=name).first()
     posts = Post.query.filter_by(author=name).order_by('id desc')
+    replies = Reply.query.filter_by(author=name).order_by('id desc')
 
-    return render_template('personcenter.html', posts=posts, user=user)
+    return render_template('personcenter.html', posts=posts, user=user, replies=replies)
 
 @app.route('/p/<int:id>/')
-@login_required
 #@cached(120)
 def detail(id):
     post = Post.query.filter_by(id=id).first()

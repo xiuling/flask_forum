@@ -4,6 +4,7 @@
 {% for user in users %}
 	<div class="post">
 	<a id="title" href="{{ url_for('personcenter', name=user.username) }}">{{ user.username }}</a>
+	<small>{{ user.join }}</small>
 	{% if session.gid == 1 %}
 		<a id="option" href="{{ url_for('deluser', id=user.id) }}">delete</a>
 	{% endif %}
@@ -14,6 +15,10 @@
 {% endfor %}
 </section>
 <section role="sidebar">
-	<h3><a href="{{ url_for('personcenter', name=session.username) }}">{{ session.username }}</a></h3>
+	<div class="head">
+		<div class="inner">
+			<h5><a href="{{ url_for('personcenter', name=user.username) }}">{{ user.username }}</a></h5>
+		</div>
+	</div>
 </section>
 {% endblock %}
