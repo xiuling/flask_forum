@@ -15,10 +15,18 @@
 {% endfor %}
 </section>
 <section role="sidebar">
-	<div class="head">
-		<div class="inner">
-			<h5><a href="{{ url_for('personcenter', name=user.username) }}">{{ user.username }}</a></h5>
+	{% if session.username %}
+		<div class="head">
+			<div class="inner">
+				<h5><a href="{{ url_for('personcenter', name=session.username) }}">{{ session.username }}</a></h5>
+			</div>
 		</div>
-	</div>
+	{% else %}
+		<div class="head">
+			<div class="inner">
+				<h5>V2XM = way to extreme/explore</h5>
+			</div>
+		</div>
+	{% endif %}
 </section>
 {% endblock %}

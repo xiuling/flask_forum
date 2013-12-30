@@ -1,0 +1,10 @@
+{% extends "main.html" %}
+{% block body %}
+
+<form action="{{ url_for('changepw',id=user.id) }}" method="post">
+	<p><label for="password">Old Password</label><input id="password" type="password" name="password"></p>
+	<p><label for="newpw1">New Password</label><input id="password" type="password" name="newpw1"></p>
+	<p><label for="newpw2">New Again</label><input id="password" type="password" name="newpw2"></p>
+	<p><input type="submit" value="Log in"></p>
+</form>
+{% endblock %}

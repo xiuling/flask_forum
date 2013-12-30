@@ -14,7 +14,7 @@
 	<div id="comment">
 		<div class="head">
 			<div class="inner">
-				<h5>replies</h5>
+				<h5>replies:{{ post.replies_count }}</h5>
 			</div>
 		</div>
 		{% for reply in replies %}
@@ -45,10 +45,18 @@
 	{% endif %}
 </section>
 <section role="sidebar">
-	<div class="head">
+	{% if session.username %}
+		<div class="head">
 			<div class="inner">
-				
+				<h5><a href="{{ url_for('personcenter', name=session.username) }}">{{ session.username }}</a></h5>
 			</div>
 		</div>
+	{% else %}
+		<div class="head">
+			<div class="inner">
+				<h5>V2XM = way to extreme/explore</h5>
+			</div>
+		</div>
+	{% endif %}
 </section>
 {% endblock %}

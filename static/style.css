@@ -20,7 +20,7 @@ header .login a:hover{color: #fff;}
 
 section[role=main]{float: left;width: 70%;border: 1px solid gray;padding: 1em 0.5em;border-radius: 5px;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);}
 section#main{float: left;width: 70%;}
-section[role=sidebar]{float: left;width: 20%;height: 10em;margin: 0em 0 1em 2em;border: 1px solid gray; border-radius: 5px;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);}
+section[role=sidebar]{float: left;width: 20%;height: 9em;margin: 0em 0 1em 2em;border: 1px solid gray; border-radius: 5px;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);}
 section h2 {font-weight:normal;}
 section h3 {margin: 0;}
 
@@ -29,13 +29,16 @@ footer {clear:both;text-align: center;background: #4B4B4B;padding: 0.1em; height
 /* post*/
 
 .post {padding-bottom: 0.5em;margin-bottom:0.5em;border-bottom: 1px solid #CECACA;}
-.post a#author {width: 3em;height: 3em;padding: 1em;}
+.post a#author {width: 3em;height: 3em;padding-left: 1em;}
 .post a#title {height: 3em;font-size:1.2em;font-weight: 400;padding: 1em;}
 .post a#option {color:#7F027F;float:right;margin-left: 0.3em;}
 .post a#title:hover, .post a#option:hover {color:#444;}
-.post small {color:#888888;height: 3em;padding: 1em;}
+.post small {color:#888888;height: 3em;}
 .post a#more {font-size:80%;}
 .post .info {font-size:80%;}
+.post span a{background-color: #969cb1;border-radius: 12px;color: #FFFFFF;display: inline-block;font-weight:bold;line-height: 12px;margin-right: 15px;padding: 3px 10px; text-decoration: none; float: right;}
+.post span a:link, .post span a:active{background-color: #969cb1;}
+.post span a:hover{background-color: #595A59;}
 
 #post, #comment, #addReply {border: 1px solid gray;border-radius: 3px;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);}
 

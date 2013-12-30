@@ -85,6 +85,7 @@ class Post(db.Model):
     title = db.Column(db.String(60))
     html = db.Column(db.Text)
     created = db.Column(db.DateTime)
+    replies_count = db.Column(db.Integer, default=0)
     author = db.Column(db.String(30), db.ForeignKey('user.username'))
     replay = db.relationship('Reply', backref='posts', lazy='dynamic')
 
@@ -125,9 +126,8 @@ def timesince(dt):
 @app.route('/')
 #@cached(120)  # from 200 req/s to 800 req/s
 def index():
-    posts = Post.query.order_by('created DESC')
-    #posts = Post.query.order_by('created DESC').limit(app.config['post_count'])
-    # Ordering by created time DESC isstead of reversing
+    posts = Post.query.order_by('id DESC')
+
     return render_template('index.html', posts=posts)
 
 @app.route('/personcenter/<name>')
@@ -144,6 +144,7 @@ def personcenter(name):
 def detail(id):
     post = Post.query.filter_by(id=id).first()
     replies = Reply.query.filter_by(post_id = id).all()
+    #replies_count = Reply.query.filter_by(post_id = id).count()
     if post:
         return render_template('detail.html', post=post,replies=replies)
     else:
@@ -223,6 +224,8 @@ def reply(id):
         author = session['username']        
         content = request.form['content']
         db.session.add(Reply(author, content, post_id))
+        post = Post.query.get(id)
+        post.replies_count = post.replies_count+1
         db.session.commit()
 
         return redirect(url_for('detail', id=id))
@@ -264,6 +267,30 @@ def logout():
     session.pop('username', None)
     flash('You were logged out.')
     return redirect(url_for('index'))
+
+@app.route('/changepw/<int:id>/', methods=['GET', 'POST'])
+@login_required
+def changepw(id):
+    user = User.query.filter_by(id=id).first()
+    if request.method == 'POST':
+        oldpw = request.form['password']
+        newpw1 = request.form['newpw1']
+        newpw2 = request.form['newpw2']
+        if oldpw == user.password:
+            if newpw1 == newpw2:
+                user.password = newpw2
+                db.session.commit()
+                flash('Your password has been changed.')
+                return redirect(url_for('personcenter', name=user.username))
+            else:
+                flash('two new password are not the same.')
+                return render_template('changepw.html',user=user)
+        else:
+            flash('Old password is wrong.')
+            return render_template('changepw.html',user=user)
+    else:
+        return render_template('changepw.html',user=user)
+
 
 @app.route('/manauser/')
 @login_required
